@@ -1,0 +1,51 @@
+% visualizeDNAHelix.m
+function visualizeDNAHelix(numBases)
+    % Main function to visualize the DNA double helix
+    % Input: numBases - Number of base pairs to generate (e.g., 1000)
+    
+    % Define helix parameters
+    helixRadius = 2.5;
+    helixPitch = 3.4;  % Height per base pair
+    turnLength = 10;   % Number of base pairs per turn
+
+    % Generate a random DNA sequence of specified length
+    sequence = generateRandomDNA(numBases);
+
+    % Generate helix structure data
+    [x1, y1, z, x2, y2] = generateHelix(numBases, helixRadius, helixPitch, turnLength);
+
+    % Create figure and plot helix strands
+    figure;
+    hold on;
+    plotHelixStrands(x1, y1, z, x2, y2);
+    
+    % Plot the base pairs connecting the two strands
+    plotBasePairs(sequence, x1, y1, z, x2, y2);
+
+    % Set axis limits based on the DNA length
+    maxZ = max(z);
+    axis([-10 10 -10 10 0 maxZ]);
+    
+    % Use the camera view angle and zoom for the initial display
+    camva(6);   % Set initial camera view angle for a broad view
+    camzoom(1); % Initial zoom level, 1 is default
+
+    % Allow for interactivity in 3D view
+    rotate3d on; % Enable 3D rotation
+    grid on;
+    xlabel('X');
+    ylabel('Y');
+    zlabel('Z');
+    title(['3D DNA Double Helix Visualization with ', num2str(numBases), ' Base Pairs']);
+    view(3); % Start with a 3D view
+    hold off;
+end
+
+
+function sequence = generateRandomDNA(numBases)
+    % Generates a random DNA sequence of given length
+    bases = ['A', 'T', 'C', 'G'];
+    sequence = bases(randi(4, 1, numBases));
+end
+
+visualizeDNAHelix_S(1000);
